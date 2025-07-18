@@ -1,6 +1,5 @@
 package com.example.finance.application.service.impl;
 
-import com.example.finance.application.dto.ResponseDto;
 import com.example.finance.application.exception.BadRequestException;
 import com.example.finance.application.exception.NotFoundException;
 import com.example.finance.application.service.CardService;
@@ -8,7 +7,6 @@ import com.example.finance.infratructure.persistance.model.Card;
 import com.example.finance.infratructure.persistance.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

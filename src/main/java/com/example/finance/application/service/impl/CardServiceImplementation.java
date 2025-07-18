@@ -3,6 +3,7 @@ package com.example.finance.application.service.impl;
 import com.example.finance.application.exception.BadRequestException;
 import com.example.finance.application.exception.NotFoundException;
 import com.example.finance.application.service.CardService;
+import com.example.finance.domain.enums.Status;
 import com.example.finance.infratructure.persistance.model.Card;
 import com.example.finance.infratructure.persistance.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,18 +43,25 @@ public class CardServiceImplementation implements CardService {
         Card sC = getById(sourceCardId);
         Card dC = getById(destinationCardId);
 
-        if (sC.getBalance().compareTo(amount) < 0) {
-            throw new BadRequestException("Insufficient funds on source card");
+        if (sC.getStatus() != Status.ACTIVE) {
+            throw new BadRequestException("Source card is not active");
+        }
+
+        if (dC.getStatus() != Status.ACTIVE) {
+            throw new BadRequestException("Destination card is not active");
         }
 
         if (sC.getId().equals(dC.getId())) {
             throw new BadRequestException("Cannot transfer to the same card");
         }
 
+        if (sC.getBalance().compareTo(amount) < 0) {
+            throw new BadRequestException("Insufficient funds on source card");
+        }
+
         sC.setBalance(sC.getBalance().subtract(amount));
         dC.setBalance(dC.getBalance().add(amount));
 
         cardRepository.saveAll(List.of(sC, dC));
-
     }
 }

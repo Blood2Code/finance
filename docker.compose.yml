@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
 
   postgres:
@@ -14,6 +12,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - finance-network
 
   finance-service:
     build:
@@ -29,6 +29,8 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 1
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_SQL_INIT_MODE: always
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: true
     networks:
       - finance-network
 
